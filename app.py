@@ -2,11 +2,11 @@ import streamlit as st
 
 st.set_page_config(
     page_title="B3Vision • Klasifikasi Limbah B3 (MobileNetV2)",
-    page_icon="♻️",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
+from ui.icons import render_lucide_svg
 from ui.styles import apply_custom_css
 from ui.views_home import render_home_view
 from ui.views_predict import render_predict_view
@@ -29,20 +29,21 @@ def render_top_navbar():
     col_brand, col_nav = st.columns([1, 1.2], vertical_alignment="center")
 
     with col_brand:
+        brand_svg = render_lucide_svg("recycle", size=24, stroke_width=2.2, color="#059669")
         st.markdown(
-            '<div class="top-nav-brand">'
-            '<span class="brand-icon">♻️</span>'
-            '<span class="brand-text">B3Vision</span>'
-            '</div>',
+            f'<div class="top-nav-brand">'
+            f'<span class="brand-icon" style="display:inline-flex;align-items:center;">{brand_svg}</span>'
+            f'<span class="brand-text">B3Vision</span>'
+            f'</div>',
             unsafe_allow_html=True,
         )
 
     with col_nav:
         nav_cols = st.columns(3, gap="small")
         tabs = [
-            ("Beranda", "🏠 Beranda"),
-            ("Analisis", "🔍 Analisis"),
-            ("Tentang", "ℹ️ Tentang"),
+            ("Beranda", "Beranda"),
+            ("Analisis", "Analisis"),
+            ("Tentang", "Tentang"),
         ]
         for col, (tab_id, tab_label) in zip(nav_cols, tabs):
             with col:

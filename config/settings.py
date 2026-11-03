@@ -1,17 +1,18 @@
 """
-Konfigurasi Aplikasi B3Vision (7 Kelas Dataset)
-Pengaturan kelas limbah, ambang batas confidence, dan panduan penanganan limbah.
+Konfigurasi Aplikasi B3Vision (12 Kelas Dataset Penuh)
+Pengaturan taksonomi 12 kelas (6 Limbah B3 & 6 Non-B3), ambang batas keyakinan, dan SOP penanganan.
 """
 
 APP_TITLE = "B3Vision"
 APP_TAGLINE = "Pilah Limbah B3, Jaga Lingkungan"
-APP_VERSION = "v1.0 (7-Class MobileNetV2)"
+APP_VERSION = "v2.0 (12-Class MobileNetV2)"
 
-# Ambang batas kepercayaan model (di bawah ini dianggap 'Tidak Yakin / Perlu Foto Ulang')
+# Ambang batas kepercayaan model (di bawah ini dianggap 'Kurang Yakin / Perlu Foto Ulang')
 CONFIDENCE_THRESHOLD = 0.60
 
-# Taksonomi dan Definisi 7 Kelas Dataset
+# Taksonomi dan Definisi Lengkap 12 Kelas Dataset
 CLASSES = {
+    # ==================== 6 KELAS LIMBAH B3 (BERBAHAYA & BERACUN) ====================
     "battery": {
         "id": "battery",
         "name": "Baterai & Akumulator",
@@ -139,16 +140,102 @@ CLASSES = {
             "DILARANG membuang jarum suntik tanpa pelindung jarum ke kantong sampah umum."
         ]
     },
+
+    # ==================== 6 KELAS NON-B3 (DAUR ULANG, ORGANIK, & TEKSTIL) ====================
+    "biological": {
+        "id": "biological",
+        "name": "Sampah Organik & Sisa Makanan",
+        "short_name": "Organik (Non-B3)",
+        "category": "Non-B3",
+        "badge_color": "#16A34A",
+        "icon": "🍎",
+        "hazard_level": "Aman (Dapat Dikomposkan)",
+        "description": "Sisa sayuran, buah-buahan, sisa makanan dapur, daun kering, dan bahan organik mudah terurai hayati.",
+        "environmental_impact": "Menghasilkan gas metana (CH4) jika tertumpuk di TPA tanpa oksigen, namun sangat bermanfaat jika diolah menjadi pupuk kompos atau pakan maggot.",
+        "sop_actions": [
+            "Pisahkan secara ketat dari sampah anorganik dan limbah B3 beracun.",
+            "Tiriskan sisa air/kuah makanan sebelum dimasukkan ke dalam wadah pengomposan.",
+            "Manfaatkan sebagai bahan baku pembuatan kompos organik atau pakan biokonversi maggot BSF.",
+            "Gunakan wadah sampah bertutup rapat untuk mencegah bau dan perkembangbiakan lalat."
+        ],
+        "prohibitions": [
+            "DILARANG mencampur sampah organik dengan baterai atau pecahan kaca.",
+            "DILARANG membakar sampah organik basah karena menimbulkan asap pekat yang mencemari udara."
+        ]
+    },
+    "cardboard": {
+        "id": "cardboard",
+        "name": "Kardus & Karton Kemasan",
+        "short_name": "Kardus (Non-B3)",
+        "category": "Non-B3",
+        "badge_color": "#16A34A",
+        "icon": "📦",
+        "hazard_level": "Aman (Daur Ulang Tinggi)",
+        "description": "Kardus cokelat bergelombang (corrugated box), karton duplex kemasan makanan kering, dan tabung karton gulungan.",
+        "environmental_impact": "Dapat didaur ulang menjadi bubur kertas (pulp) berulang kali untuk mengurangi penebangan pohon dan deforestasi hutan.",
+        "sop_actions": [
+            "Bongkar lipatan dan pipihkan kardus untuk menghemat ruang tempat penyimpanan.",
+            "Lepaskan selotip plastik, lakban, dan staples logam tebal yang masih menempel.",
+            "Jaga kardus tetap kering dan terlindung dari cipratan air agar nilai daur ulangnya tinggi.",
+            "Ikat tumpukan kardus dengan tali dan setorkan ke Bank Sampah atau mitra daur ulang."
+        ],
+        "prohibitions": [
+            "DILARANG sengaja membasahi kardus untuk menambah bobot timbangan.",
+            "DILARANG membakar tumpukan kardus karena berisiko memicu kebakaran lingkungan."
+        ]
+    },
+    "clothes": {
+        "id": "clothes",
+        "name": "Pakaian & Limbah Tekstil",
+        "short_name": "Pakaian / Tekstil (Non-B3)",
+        "category": "Non-B3",
+        "badge_color": "#16A34A",
+        "icon": "👕",
+        "hazard_level": "Aman (Guna Ulang / Daur Ulang)",
+        "description": "Baju bekas, celana kain, jaket, kain perca penjahit, selimut, dan serat tekstil katun maupun sintetis.",
+        "environmental_impact": "Serat sintetis (polyester/nylon) sulit terurai dan melepaskan mikroplastik ke lingkungan jika terbuang ke perairan terbuka.",
+        "sop_actions": [
+            "Cuci dan rapikan pakaian jika kondisinya masih layak pakai untuk didonasikan kembali.",
+            "Pisahkan kancing logam atau resleting jika pakaian akan dicacah menjadi bahan isian daur ulang.",
+            "Gunakan kain perca rusak sebagai lap pembersih (majun) serbaguna.",
+            "Serahkan ke Dropbox daur ulang tekstil atau yayasan sosial terdekat."
+        ],
+        "prohibitions": [
+            "DILARANG membakar pakaian bekas karena serat sintetis melepaskan gas beracun dioksin.",
+            "DILARANG membuang limbah kain ke sungai atau selokan yang menyumbat saluran air."
+        ]
+    },
+    "paper": {
+        "id": "paper",
+        "name": "Kertas & Dokumen Daur Ulang",
+        "short_name": "Kertas (Non-B3)",
+        "category": "Non-B3",
+        "badge_color": "#16A34A",
+        "icon": "📄",
+        "hazard_level": "Aman (Daur Ulang)",
+        "description": "Kertas HVS putih, koran bekas, majalah, buku tulis, amplop surat, dan selebaran kertas kering.",
+        "environmental_impact": "Daur ulang 1 ton kertas menghemat 17 batang pohon dewasa, 7.000 galon air bersih, dan mengurangi emisi gas rumah kaca.",
+        "sop_actions": [
+            "Pisahkan penjepit kertas (paper clip), staples, dan binder plastik dari lembaran kertas.",
+            "Hancurkan (shredding) dokumen sensitif atau rahasia pribadi sebelum disalurkan.",
+            "Simpan kertas dalam keadaan bersih, kering, dan tidak terkontaminasi minyak makanan.",
+            "Tumpuk rapi dan salurkan ke Bank Sampah atau pabrik daur ulang kertas terdekat."
+        ],
+        "prohibitions": [
+            "DILARANG mencampur kertas bersih dengan sampah basah sisa makanan dapur.",
+            "DILARANG membakar sampah kertas di pekarangan rumah."
+        ]
+    },
     "plastic": {
         "id": "plastic",
         "name": "Plastik Daur Ulang (PET/HDPE)",
         "short_name": "Plastik (Non-B3)",
         "category": "Non-B3",
         "badge_color": "#16A34A",
-        "icon": "♻️",
-        "hazard_level": "Aman (Negative Control)",
+        "icon": "🥤",
+        "hazard_level": "Aman (Daur Ulang)",
         "description": "Botol minuman plastik (PET), botol detergen (HDPE), wadah makanan bersih, dan gelas plastik bening.",
-        "environmental_impact": "Bukan limbah beracun B3 langsung, namun membutuhkan pengelolaan sirkular agar tidak menyumbat saluran air dan mencemari lautan.",
+        "environmental_impact": "Bukan racun langsung B3, namun membutuhkan daur ulang sirkular agar tidak terpecah menjadi mikroplastik yang mencemari laut.",
         "sop_actions": [
             "Kosongkan dan bilas bersih wadah dari sisa cairan manis atau minyak.",
             "Lepaskan label plastik dan pisahkan tutup botol jika diperlukan.",
@@ -159,16 +246,36 @@ CLASSES = {
             "DILARANG membakar sampah plastik di pekarangan karena asapnya melepaskan senyawa karsinogenik.",
             "DILARANG membuang plastik ke aliran sungai atau selokan umum."
         ]
+    },
+    "shoes": {
+        "id": "shoes",
+        "name": "Sepatu & Alas Kaki Bekas",
+        "short_name": "Sepatu (Non-B3)",
+        "category": "Non-B3",
+        "badge_color": "#16A34A",
+        "icon": "👟",
+        "hazard_level": "Aman (Guna Ulang / Refurbish)",
+        "description": "Sepatu kets (sneakers), sandal karet, sepatu olahraga, dan alas kaki kombinasi karet sol, busa EVA, dan kanvas.",
+        "environmental_impact": "Sol karet dan perekat sintetis butuh ratusan tahun untuk terurai di alam; daur ulang karet sol dapat diolah menjadi matras lantai olahraga.",
+        "sop_actions": [
+            "Bersihkan kotoran tanah yang menempel pada sol luar sepatu.",
+            "Ikat kedua pasang sepatu menjadi satu agar tidak terpisah saat pengumpulan.",
+            "Jika sol terkelupas namun badan sepatu masih kokoh, lakukan perbaikan (sol sepatu ulang).",
+            "Salurkan ke program donasi alas kaki atau drop point daur ulang khusus sepatu."
+        ],
+        "prohibitions": [
+            "DILARANG membakar sol karet sepatu karena menghasilkan asap hitam pekat karsinogenik.",
+            "DILARANG membuang sepatu bekas ke selokan, danau, atau aliran sungai."
+        ]
     }
 }
 
-# Endpoint API backend (dikonfigurasi di sini, tidak ditampilkan di UI).
-# Bisa di-override lewat environment variable B3VISION_API_URL.
+# Endpoint API backend
 import os as _os
 API_URL = _os.environ.get("B3VISION_API_URL", "http://127.0.0.1:8000/api/v1/predict")
 
-# Catatan singkat di bawah hasil analisis
+# Catatan resmi di bawah hasil analisis
 OFFICIAL_DISCLAIMER = (
-    "Hasil analisis ini adalah prediksi otomatis berdasarkan gambar dan dapat keliru. "
-    "Jika ragu, perlakukan limbah tersebut sebagai limbah B3."
+    "Hasil analisis ini adalah prediksi otomatis deep learning dan dapat keliru. "
+    "Jika ragu dengan jenis limbah berbahaya, selalu perlakukan objek tersebut dengan standar kehati-hatian limbah B3."
 )

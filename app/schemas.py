@@ -1,5 +1,5 @@
 """
-Definisi skema Pydantic untuk kontrak data REST API FastAPI.
+Definisi skema Pydantic untuk kontrak data REST API FastAPI (12 Kelas).
 """
 
 from typing import Dict, List
@@ -10,8 +10,8 @@ class HealthResponse(BaseModel):
     """Skema respon pengecekan status server dan model (/health)."""
     status: str = Field(..., example="ok")
     model_loaded: bool = Field(..., example=True)
-    model_version: str = Field(..., example="v1.0-mobilenetv2")
-    total_classes: int = Field(..., example=7)
+    model_version: str = Field(..., example="v2.0-mobilenetv2-12class")
+    total_classes: int = Field(..., example=12)
 
 
 class ClassProbability(BaseModel):
@@ -37,7 +37,7 @@ class PredictionResponse(BaseModel):
     confidence: float
     is_confident: bool
     status_state: str
-    model_version: str = "v1.0-mobilenetv2"
+    model_version: str = "v2.0-mobilenetv2-12class"
     latency_ms: float
     probabilities: Dict[str, float]
     distribution: List[ClassProbability]

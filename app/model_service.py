@@ -1,9 +1,10 @@
 """
 Layanan inferensi model deep learning MobileNetV2 (TensorFlow / Keras).
-Memuat model sekali saat startup dan memproses inferensi citra menjadi hasil klasifikasi & SOP B3.
+Memuat model sekali saat startup dan memproses inferensi citra menjadi hasil klasifikasi 12 kelas & panduan SOP.
 """
 
 import io
+import json
 import time
 from pathlib import Path
 from PIL import Image
@@ -17,15 +18,29 @@ from core.preprocessor import load_and_preprocess_image
 from config.settings import CLASSES, CONFIDENCE_THRESHOLD
 
 MODEL_PATH = Path("models/mobilenetv2_limbah_b3.keras")
-MODEL_VERSION = "v1.0-mobilenetv2"
-CLASS_KEYS = ["battery", "brown-glass", "green-glass", "metal", "plastic", "trash", "white-glass"]
+CLASS_NAMES_PATH = Path("models/class_names.json")
+MODEL_VERSION = "v2.0-mobilenetv2-12class"
+
+# Muat urutan nama kelas dari JSON pelatihan
+CLASS_KEYS = [
+    "battery", "biological", "brown-glass", "cardboard", "clothes",
+    "green-glass", "metal", "paper", "plastic", "shoes", "trash", "white-glass"
+]
+
+if CLASS_NAMES_PATH.exists():
+    try:
+        with open(CLASS_NAMES_PATH, "r", encoding="utf-8") as f:
+            CLASS_KEYS = json.load(f)
+        print(f"[SUCCESS] Daftar {len(CLASS_KEYS)} kelas dimuat dari {CLASS_NAMES_PATH}")
+    except Exception as e:
+        print(f"[WARN] Gagal membaca {CLASS_NAMES_PATH}, menggunakan default 12 kelas: {e}")
 
 # Muat bobot model TensorFlow saat modul pertama kali di-import
 model = None
 if MODEL_PATH.exists() and tf is not None:
     try:
         model = tf.keras.models.load_model(MODEL_PATH)
-        print(f"[SUCCESS] Model berhasil dimuat dari {MODEL_PATH}")
+        print(f"[SUCCESS] Model berhasil dimuat dari {MODEL_PATH} (Output: {model.output_shape})")
     except Exception as e:
         print(f"[ERROR] Gagal memuat model dari {MODEL_PATH}: {e}")
         model = None
@@ -41,7 +56,7 @@ def is_model_ready() -> bool:
 
 
 def predict_image_bytes(image_bytes: bytes, filename: str = "upload.jpg") -> dict:
-    """Proses biner citra, jalankan model predict, dan petakan ke metadata taksonomi 7 kelas."""
+    """Proses biner citra, jalankan model predict, dan petakan ke metadata taksonomi 12 kelas."""
     if model is None:
         raise RuntimeError(f"Model belum terpasang di '{MODEL_PATH}'. Pastikan file mobilenetv2_limbah_b3.keras sudah ada dan dependensi TensorFlow tersedia.")
 
@@ -51,7 +66,7 @@ def predict_image_bytes(image_bytes: bytes, filename: str = "upload.jpg") -> dic
     pil_image = Image.open(io.BytesIO(image_bytes))
     _, preprocessed_batch = load_and_preprocess_image(pil_image)
 
-    # Inferensi probabilitas untuk ke-7 kelas
+    # Inferensi probabilitas untuk ke-12 kelas
     preds = model.predict(preprocessed_batch, verbose=0)[0]
     probabilities = {CLASS_KEYS[i]: round(float(preds[i]), 4) for i in range(len(CLASS_KEYS))}
     sorted_probs = sorted(probabilities.items(), key=lambda item: item[1], reverse=True)
@@ -74,9 +89,9 @@ def predict_image_bytes(image_bytes: bytes, filename: str = "upload.jpg") -> dic
     distribution = [
         {
             "class_id": cid,
-            "name": CLASSES[cid]["short_name"],
-            "full_name": CLASSES[cid]["name"],
-            "category": CLASSES[cid]["category"],
+            "name": CLASSES.get(cid, {}).get("short_name", cid),
+            "full_name": CLASSES.get(cid, {}).get("name", cid),
+            "category": CLASSES.get(cid, {}).get("category", "Non-B3"),
             "confidence": round(prob * 100, 2),
             "ratio": prob,
         }

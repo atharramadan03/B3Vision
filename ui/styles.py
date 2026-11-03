@@ -66,9 +66,9 @@ header[data-testid="stHeader"] {
 }
 
 .block-container {
-    max-width: 1120px !important;
+    max-width: 1260px !important;
     padding-top: 1.2rem !important;
-    padding-bottom: 4rem !important;
+    padding-bottom: 3.5rem !important;
 }
 
 /* Sembunyikan link ikon anchor bawaan heading Streamlit */
@@ -84,11 +84,11 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     pointer-events: none !important;
 }
 
-/* ---------- Keyframe Animations ---------- */
+/* ---------- Keyframe Animations (Halus & Bersih) ---------- */
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(14px);
+        transform: translateY(5px);
     }
     to {
         opacity: 1;
@@ -193,16 +193,17 @@ div.stButton > button[kind="primary"] {
     background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
     color: #FFFFFF !important;
     border: 1px solid #047857 !important;
-    box-shadow: 0 6px 16px -4px rgba(5, 150, 105, 0.35) !important;
+    box-shadow: 0 4px 12px -3px rgba(5, 150, 105, 0.3) !important;
 }
 
-div.stButton > button[kind="primary"]:hover {
+div.stButton > button[kind="primary"]:hover:not(:disabled) {
     background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 10px 22px -4px rgba(5, 150, 105, 0.45) !important;
+    color: #FFFFFF !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px -3px rgba(5, 150, 105, 0.35) !important;
 }
 
-div.stButton > button[kind="primary"]:active {
+div.stButton > button[kind="primary"]:active:not(:disabled) {
     transform: translateY(0px) !important;
 }
 
@@ -214,18 +215,35 @@ div.stButton > button[kind="secondary"] {
     box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
 }
 
-div.stButton > button[kind="secondary"]:hover {
+div.stButton > button[kind="secondary"]:hover:not(:disabled) {
     background: #F0FDF4 !important;
     color: var(--primary-dark) !important;
     border-color: var(--primary-border) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 14px -4px rgba(5, 150, 105, 0.14) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px -3px rgba(5, 150, 105, 0.12) !important;
 }
 
-div.stButton > button:disabled {
-    background: #F1F5F9 !important;
-    color: #94A3B8 !important;
-    border-color: #E2E8F0 !important;
+/* Disabled Button (Saat Belum Ada Gambar) & Hover State */
+div.stButton > button:disabled,
+div.stButton > button[disabled],
+div.stButton > button[kind="primary"]:disabled,
+div.stButton > button[kind="primary"][disabled] {
+    background: #E2E8F0 !important;
+    color: #64748B !important;
+    border: 1px solid #CBD5E1 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    cursor: not-allowed !important;
+    opacity: 0.9 !important;
+}
+
+div.stButton > button:disabled:hover,
+div.stButton > button[disabled]:hover,
+div.stButton > button[kind="primary"]:disabled:hover,
+div.stButton > button[kind="primary"][disabled]:hover {
+    background: #CBD5E1 !important;
+    color: #0F172A !important; /* Teks berubah hitam pekat saat di-hover */
+    border-color: #94A3B8 !important;
     box-shadow: none !important;
     transform: none !important;
     cursor: not-allowed !important;
@@ -735,24 +753,29 @@ div.stButton > button:disabled {
     background: var(--surface);
     border: 2px dashed #CBD5E1;
     border-radius: var(--radius-lg);
-    padding: 44px 26px;
+    padding: 38px 22px;
     text-align: center;
     color: var(--muted);
     animation: fadeInUp 0.4s ease both;
 }
 
-.empty-state .big {
-    font-size: 2.8rem;
-    margin-bottom: 10px;
-    display: inline-block;
-    animation: floatSlow 3.2s ease-in-out infinite;
+.empty-state .big-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: #F1F5F9;
+    color: #64748B;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
 }
 
 .tips-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 22px;
+    gap: 12px;
+    margin-top: 24px;
     text-align: left;
 }
 
@@ -763,20 +786,291 @@ div.stButton > button:disabled {
 }
 
 .tip-box {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    padding: 13px 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
+}
+
+.tip-box:hover {
+    border-color: #CBD5E1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+}
+
+.tip-icon-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.tip-icon-badge {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: #F1F5F9;
+    color: #334155;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.tip-title {
+    font-size: 0.83rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.tip-desc {
+    font-size: 0.76rem;
+    color: #64748B;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* ---------- Compact Class Cards (Katalog 12 Kelas) ---------- */
+.compact-class-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 13px 13px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 142px;
+}
+
+.compact-class-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+    border-color: #CBD5E1;
+}
+
+.compact-card-header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 6px;
+}
+
+.compact-icon-box {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.compact-icon-box.b3 {
+    background: #FEF2F2;
+    color: #DC2626;
+    border: 1px solid #FECACA;
+}
+
+.compact-icon-box.nonb3 {
+    background: #ECFDF5;
+    color: #059669;
+    border: 1px solid #A7F3D0;
+}
+
+.compact-card-title {
+    font-weight: 700;
+    font-size: 0.86rem;
+    color: var(--ink);
+    line-height: 1.25;
+}
+
+.compact-badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 5px;
+    margin-top: 2px;
+}
+
+.compact-badge.b3 {
+    background: #FEF2F2;
+    color: #DC2626;
+    border: 1px solid #FECACA;
+}
+
+.compact-badge.nonb3 {
+    background: #ECFDF5;
+    color: #047857;
+    border: 1px solid #A7F3D0;
+}
+
+.compact-hazard {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #64748B;
+    margin-bottom: 5px;
+}
+
+.compact-desc {
+    font-size: 0.77rem;
+    color: #475569;
+    line-height: 1.42;
+    flex-grow: 1;
+    margin-bottom: 6px;
+}
+
+.compact-impact {
+    font-size: 0.71rem;
+    color: #475569;
+    background: #F8FAFC;
+    padding: 5px 8px;
+    border-radius: 6px;
+    border: 1px solid #E2E8F0;
+    line-height: 1.35;
+}
+
+/* ---------- SOP & Larangan Horizontal Grid (Bawah Foto) ---------- */
+.sop-horizontal-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    box-shadow: var(--shadow-sm);
+    height: 100%;
+}
+
+.sop-horizontal-card.safe-card {
+    border-top: 3px solid var(--primary);
+}
+
+.sop-horizontal-card.avoid-card {
+    border-top: 3px solid var(--danger);
+}
+
+.sop-header-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.safety-disclaimer-box {
+    background: #F8FAFC;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: #64748B;
+    line-height: 1.5;
+}
+
+/* ---------- Training Stages Pipeline (Tentang) ---------- */
+.training-pipeline-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: 22px 24px;
+    margin-top: 22px;
+    box-shadow: var(--shadow-sm);
+}
+
+.training-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+    .training-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stage-box {
     background: #F8FAFC;
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 11px 12px;
-    font-size: 0.78rem;
-    color: #475569;
-    line-height: 1.45;
+    padding: 15px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
 }
 
-.tip-box b {
-    display: block;
+.stage-box:hover {
+    border-color: #CBD5E1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+}
+
+.stage-badge {
+    display: inline-block;
+    font-size: 0.67rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+}
+
+.stage-badge.p1 {
+    background: #EFF6FF;
+    color: #1D4ED8;
+    border: 1px solid #BFDBFE;
+}
+
+.stage-badge.p2 {
+    background: #ECFDF5;
+    color: #047857;
+    border: 1px solid #A7F3D0;
+}
+
+.stage-name {
+    font-size: 0.92rem;
+    font-weight: 800;
     color: var(--ink);
-    margin-bottom: 2px;
-    font-size: 0.8rem;
+    margin-bottom: 5px;
+}
+
+.stage-desc {
+    font-size: 0.81rem;
+    color: #475569;
+    line-height: 1.48;
+    margin-bottom: 12px;
+}
+
+.stage-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.stage-spec-tag {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    padding: 3px 7px;
+    border-radius: 5px;
+    color: #334155;
 }
 
 /* ---------- About & Class Chips ---------- */

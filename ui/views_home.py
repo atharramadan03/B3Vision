@@ -1,5 +1,6 @@
 import streamlit as st
 from config.settings import APP_TAGLINE
+from ui.icons import render_lucide_svg
 
 
 def _clean_html(raw: str) -> str:
@@ -8,30 +9,25 @@ def _clean_html(raw: str) -> str:
 
 
 def render_home_view(on_navigate=None):
-    parts = APP_TAGLINE.split(",")
-    headline_main = parts[0].strip() if len(parts) > 0 else APP_TAGLINE
-    headline_accent = parts[1].strip() if len(parts) > 1 else "Jaga Lingkungan"
-
-    hero_html = f"""
+    hero_html = """
     <div class="hero">
-        <div class="hero-eyebrow">✨ Deep Learning • Transfer Learning MobileNetV2</div>
-        <div class="hero-title">{headline_main},<br><span>{headline_accent}</span></div>
+        <div class="hero-title" style="margin-top: 6px;">Klasifikasi Limbah B3<br><span>Menggunakan MobileNetV2</span></div>
         <p>
             Unggah foto atau gunakan kamera secara langsung. <b>B3Vision</b> mengidentifikasi
-            7 kategori limbah secara akurat, memisahkan <b>Limbah B3 (Berbahaya)</b> dari
-            <b>Sampah Daur Ulang</b>, serta menyajikan panduan SOP penanganan sesuai regulasi K3.
+            12 kategori limbah secara akurat, memilah <b>Limbah B3 (Berbahaya &amp; Beracun)</b> dari
+            <b>Sampah Non-B3 (Daur Ulang, Organik &amp; Tekstil)</b>, serta menyajikan panduan SOP penanganan sesuai regulasi K3.
         </p>
         <div class="hero-stats-grid">
             <div class="hero-stat-item">
-                <div class="hero-stat-val">7 Kelas</div>
-                <div class="hero-stat-lbl">6 B3 &amp; 1 Non-B3</div>
+                <div class="hero-stat-val">12 Kelas</div>
+                <div class="hero-stat-lbl">6 B3 &amp; 6 Non-B3</div>
             </div>
             <div class="hero-stat-item">
-                <div class="hero-stat-val">90,25%</div>
+                <div class="hero-stat-val">96,17%</div>
                 <div class="hero-stat-lbl">Akurasi Pengujian</div>
             </div>
             <div class="hero-stat-item">
-                <div class="hero-stat-val">5.287</div>
+                <div class="hero-stat-val">15.515</div>
                 <div class="hero-stat-lbl">Citra Terkurasi</div>
             </div>
             <div class="hero-stat-item">
@@ -48,7 +44,7 @@ def render_home_view(on_navigate=None):
     with mid:
         if on_navigate:
             st.button(
-                "🚀  Mulai Analisis Sekarang →",
+                "Mulai Analisis Sekarang →",
                 key="cta_home_to_predict",
                 type="primary",
                 use_container_width=True,
@@ -56,7 +52,7 @@ def render_home_view(on_navigate=None):
                 args=("Analisis",),
             )
         else:
-            if st.button("🚀  Mulai Analisis Sekarang →", type="primary", use_container_width=True):
+            if st.button("Mulai Analisis Sekarang →", type="primary", use_container_width=True):
                 st.session_state["active_tab"] = "Analisis"
                 st.rerun()
 
@@ -68,13 +64,13 @@ def render_home_view(on_navigate=None):
     )
 
     steps = [
-        ("LANGKAH 01", "📸", "Unggah / Potret Citra",
+        ("LANGKAH 01", render_lucide_svg("image-placeholder", size=18, stroke_width=2.0), "Unggah / Potret Citra",
          "Pilih berkas foto limbah (JPG, PNG, WEBP) dari perangkat atau ambil foto langsung melalui webcam/kamera."),
-        ("LANGKAH 02", "⚡", "Kirim ke REST API",
+        ("LANGKAH 02", render_lucide_svg("sun", size=18, stroke_width=2.0), "Kirim ke REST API",
          "Saat tombol Analisis ditekan, citra dikirim ke endpoint FastAPI dan dinormalisasi ke tensor 224×224 piksel."),
-        ("LANGKAH 03", "🧠", "Inferensi MobileNetV2",
-         "Model Transfer Learning MobileNetV2 mengekstraksi fitur visual dan menghitung probabilitas ke-7 kelas limbah."),
-        ("LANGKAH 04", "🛡️", "Diagnosa & SOP Aman",
+        ("LANGKAH 03", render_lucide_svg("cpu", size=18, stroke_width=2.0), "Inferensi MobileNetV2",
+         "Model Transfer Learning MobileNetV2 mengekstraksi fitur visual dan menghitung probabilitas ke-12 kelas limbah."),
+        ("LANGKAH 04", render_lucide_svg("shield-check", size=18, stroke_width=2.0), "Diagnosa & SOP Aman",
          "Sistem menampilkan status bahaya (B3 / Non-B3), skor keyakinan, dampak lingkungan, dan prosedur penanganan."),
     ]
 
@@ -83,7 +79,7 @@ def render_home_view(on_navigate=None):
         <div class="step-card">
             <div class="step-top-row">
                 <span class="step-num">{num}</span>
-                <span class="step-icon">{icon}</span>
+                <span class="step-icon" style="color:var(--primary);">{icon}</span>
             </div>
             <div class="step-title">{title}</div>
             <div class="step-desc">{desc}</div>
@@ -95,28 +91,31 @@ def render_home_view(on_navigate=None):
     st.markdown(_clean_html(f'<div class="steps-grid anim-fade-2">{cards_html}</div>'), unsafe_allow_html=True)
 
     # Ringkasan Edukasi B3 vs Non-B3
-    compare_html = """
+    svg_alert = render_lucide_svg("alert-triangle", size=20, stroke_width=2.2, color="#DC2626")
+    svg_safe = render_lucide_svg("check-circle", size=20, stroke_width=2.2, color="#059669")
+
+    compare_html = f"""
     <div class="compare-grid anim-fade-3">
         <div class="compare-card b3-box">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-                <span style="font-size:1.4rem;">☣️</span>
-                <span style="font-weight:800;font-size:1.05rem;color:#991B1B;">6 Kategori Limbah B3 (Berbahaya)</span>
+                <span style="display:inline-flex;align-items:center;">{svg_alert}</span>
+                <span style="font-weight:800;font-size:1.02rem;color:#991B1B;">6 Kategori Limbah B3 (Berbahaya)</span>
             </div>
-            <p style="margin:0;color:#475569;font-size:0.9rem;line-height:1.6;">
+            <p style="margin:0;color:#475569;font-size:0.88rem;line-height:1.6;">
                 Mencakup <b>Baterai &amp; Akumulator</b>, <b>Kaleng Aerosol</b>, <b>Kaca Cokelat Farmasi</b>,
                 <b>Pecahan Kaca Hijau</b>, <b>Lampu Bohlam/Vial</b>, serta <b>Residu Medis Infeksius</b>.
-                Wajib dipisahkan agar tidak mencemari air tanah atau melukai petugas kebersihan.
+                Wajib dipisahkan secara khusus agar tidak mencemari lingkungan atau melukai petugas kebersihan.
             </p>
         </div>
         <div class="compare-card nonb3-box">
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-                <span style="font-size:1.4rem;">🌿</span>
-                <span style="font-weight:800;font-size:1.05rem;color:#065F46;">1 Kategori Non-B3 (Kontrol Daur Ulang)</span>
+                <span style="display:inline-flex;align-items:center;">{svg_safe}</span>
+                <span style="font-weight:800;font-size:1.02rem;color:#065F46;">6 Kategori Non-B3 (Daur Ulang &amp; Organik)</span>
             </div>
-            <p style="margin:0;color:#475569;font-size:0.9rem;line-height:1.6;">
-                Mencakup kemasan <b>Plastik Daur Ulang (PET/HDPE)</b> bersih sebagai pembanding negatif
-                (<i>negative control</i>). Sampah pada kategori ini aman dikelola melalui jalur Bank Sampah
-                atau daur ulang sirkular.
+            <p style="margin:0;color:#475569;font-size:0.88rem;line-height:1.6;">
+                Mencakup <b>Plastik</b>, <b>Kertas</b>, <b>Kardus</b>, <b>Pakaian/Tekstil</b>, <b>Sepatu/Alas Kaki</b>,
+                dan <b>Sampah Organik Makanan</b>. Seluruh kategori ini aman dikelola melalui jalur kompos,
+                Bank Sampah, maupun daur ulang sirkular.
             </p>
         </div>
     </div>
