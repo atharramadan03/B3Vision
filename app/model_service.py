@@ -1,7 +1,4 @@
-"""
-Layanan inferensi model deep learning MobileNetV2 (TensorFlow / Keras).
-Memuat model sekali saat startup dan memproses inferensi citra menjadi hasil klasifikasi 12 kelas & panduan SOP.
-"""
+# Layanan inferensi model MobileNetV2
 
 import io
 import json
@@ -21,7 +18,7 @@ MODEL_PATH = Path("models/mobilenetv2_limbah_b3.keras")
 CLASS_NAMES_PATH = Path("models/class_names.json")
 MODEL_VERSION = "v2.0-mobilenetv2-12class"
 
-# Muat urutan nama kelas dari JSON pelatihan
+# Daftar kelas default
 CLASS_KEYS = [
     "battery", "biological", "brown-glass", "cardboard", "clothes",
     "green-glass", "metal", "paper", "plastic", "shoes", "trash", "white-glass"
@@ -35,7 +32,7 @@ if CLASS_NAMES_PATH.exists():
     except Exception as e:
         print(f"[WARN] Gagal membaca {CLASS_NAMES_PATH}, menggunakan default 12 kelas: {e}")
 
-# Muat bobot model TensorFlow saat modul pertama kali di-import
+# Load model saat inisialisasi
 model = None
 if MODEL_PATH.exists() and tf is not None:
     try:
@@ -51,12 +48,12 @@ else:
 
 
 def is_model_ready() -> bool:
-    """Periksa apakah model TensorFlow siap menerima inferensi."""
+    # Cek kesiapan model
     return model is not None
 
 
 def predict_image_bytes(image_bytes: bytes, filename: str = "upload.jpg") -> dict:
-    """Proses biner citra, jalankan model predict, dan petakan ke metadata taksonomi 12 kelas."""
+    # Inferensi citra dan mapping hasil ke kelas limbah
     if model is None:
         raise RuntimeError(f"Model belum terpasang di '{MODEL_PATH}'. Pastikan file mobilenetv2_limbah_b3.keras sudah ada dan dependensi TensorFlow tersedia.")
 

@@ -7,7 +7,7 @@ from ui.icons import render_lucide_svg
 
 
 def _clean_html(raw: str) -> str:
-    """Membersihkan whitespace dan indentasi agar HTML tidak dianggap code block oleh Markdown."""
+    # Format baris HTML
     return "".join(line.strip() for line in raw.splitlines() if line.strip())
 
 

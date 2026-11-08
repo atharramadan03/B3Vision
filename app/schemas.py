@@ -1,13 +1,11 @@
-"""
-Definisi skema Pydantic untuk kontrak data REST API FastAPI (12 Kelas).
-"""
+# Skema data Pydantic untuk REST API
 
 from typing import Dict, List
 from pydantic import BaseModel, Field
 
 
 class HealthResponse(BaseModel):
-    """Skema respon pengecekan status server dan model (/health)."""
+    # Respon status server (/health)
     status: str = Field(..., example="ok")
     model_loaded: bool = Field(..., example=True)
     model_version: str = Field(..., example="v2.0-mobilenetv2-12class")
@@ -15,7 +13,7 @@ class HealthResponse(BaseModel):
 
 
 class ClassProbability(BaseModel):
-    """Skema data probabilitas untuk setiap kelas limbah."""
+    # Probabilitas per kelas limbah
     class_id: str
     name: str
     full_name: str
@@ -25,7 +23,7 @@ class ClassProbability(BaseModel):
 
 
 class PredictionResponse(BaseModel):
-    """Skema respon lengkap inferensi klasifikasi limbah B3 (/api/v1/predict)."""
+    # Respon inferensi prediksi (/api/v1/predict)
     status: str = "success"
     filename: str
     label: str

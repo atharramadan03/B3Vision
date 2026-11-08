@@ -1,7 +1,4 @@
-"""
-Konfigurasi Aplikasi B3Vision (12 Kelas Dataset Penuh)
-Pengaturan taksonomi 12 kelas (6 Limbah B3 & 6 Non-B3), ambang batas keyakinan, dan SOP penanganan.
-"""
+# Konfigurasi aplikasi & taksonomi kelas limbah
 
 APP_TITLE = "B3Vision"
 APP_TAGLINE = "Pilah Limbah B3, Jaga Lingkungan"

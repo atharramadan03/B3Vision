@@ -1,7 +1,4 @@
-"""
-Client HTTP untuk menghubungkan Streamlit Frontend ke FastAPI Backend.
-Menangani request multipart, cek status server, dan parsing respons JSON.
-"""
+# Client HTTP untuk koneksi Streamlit ke FastAPI
 
 import time
 from urllib.parse import urlparse
@@ -12,11 +9,10 @@ DEFAULT_TIMEOUT = 10
 
 
 def check_api_health(api_url: str = DEFAULT_API_URL):
-    """Cek apakah backend FastAPI aktif dan model sudah siap dimuat."""
+    # Cek status server FastAPI dan kesiapan model
     if not api_url:
         return False, "URL API kosong."
 
-    # Ambil base URL (misal: http://127.0.0.1:8000) lalu arahkan ke /health
     parsed = urlparse(api_url)
     health_url = f"{parsed.scheme}://{parsed.netloc}/health"
 
@@ -24,7 +20,6 @@ def check_api_health(api_url: str = DEFAULT_API_URL):
         resp = requests.get(health_url, timeout=3)
         if resp.status_code == 200:
             data = resp.json()
-            # Pastikan model_loaded bernilai True pada respon /health
             if data.get("model_loaded") is True:
                 return True, "FastAPI & Model MobileNetV2 Siap"
             return False, "Server aktif, tetapi file model .keras belum dipasang"

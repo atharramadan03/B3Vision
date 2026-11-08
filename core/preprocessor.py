@@ -1,7 +1,4 @@
-"""
-Modul Preprocessing Citra untuk MobileNetV2
-Mengubah citra input menjadi format tensor 224x224 RGB terstandarisasi.
-"""
+# Preprocessing citra input MobileNetV2
 
 from PIL import Image
 import numpy as np
@@ -9,15 +6,7 @@ import numpy as np
 TARGET_SIZE = (224, 224)
 
 def load_and_preprocess_image(image_input):
-    """
-    Memuat dan melakukan normalisasi citra untuk inferensi MobileNetV2.
-    
-    Args:
-        image_input: Dapat berupa file-like object (BytesIO), path file, atau objek PIL.Image
-        
-    Returns:
-        tuple: (pil_display_image, preprocessed_numpy_array)
-    """
+    # Memuat dan normalisasi citra untuk input model
     if isinstance(image_input, Image.Image):
         img = image_input.copy()
     else:

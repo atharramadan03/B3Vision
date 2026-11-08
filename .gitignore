@@ -13,3 +13,7 @@ ENV/
 # Temporary / OS files
 .DS_Store
 Thumbs.db
+
+# Dataset & Arsip (disimpan terpisah)
+dataset/
+*.zip

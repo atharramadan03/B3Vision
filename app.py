@@ -14,12 +14,12 @@ from ui.views_about import render_about_view
 
 
 def _switch_tab(tab_name: str):
-    """Callback perpindahan tab yang instan dan bebas konflik state."""
+    # Navigasi tab
     st.session_state["active_tab"] = tab_name
 
 
 def render_top_navbar():
-    """Merender Top Navigation Bar modern yang interaktif dan responsif."""
+    # Navigasi bar atas
     if "active_tab" not in st.session_state:
         st.session_state["active_tab"] = "Beranda"
 

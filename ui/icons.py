@@ -1,9 +1,5 @@
-"""
-Modul ikon vektor SVG resmi Lucide Icons (lucide.dev) untuk B3Vision.
-Menyediakan SVG murni yang ringan, presisi (stroke 2px), dan bebas dari emoji / AI slop.
-"""
+# Ikon SVG Lucide untuk antarmuka UI
 
-# Kamus SVG resmi Lucide Icons (viewBox 0 0 24 24)
 LUCIDE_ICONS = {
     # 1. Baterai (battery)
     "battery": (
